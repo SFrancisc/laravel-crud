@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
-class ProductController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $products = Product::latest()->paginate(5);
+        $categories = Category::latest()->paginate(5);
 
-        return view('products.index',compact('products'))
+        return view('categories.index',compact('categories'))
             ->with(request()->input('page'));
     }
 
@@ -25,7 +25,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('products.create');
+        return view('categories.create');
     }
 
     /**
@@ -33,7 +33,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //validate input
         $request->validate([
             'name' => 'required',
             'image' => 'nullable|mimes:png,jpg',
@@ -41,41 +40,40 @@ class ProductController extends Controller
         ]);
 
                 //create a new product
-            $product=Product::create($request -> all());
+            $category=Category::create($request -> all());
 
         if($request->has('image')){
 
-            $product->image = $request->file('image')->storePublicly('products');
-            $product->save();
+            $category->image = $request->file('image')->storePublicly('categories');
+            $category->save();
         }
 
 
         //redirect to user and send friendly message
-        return redirect()->route('products.index')->with('succes','Product created successfully');
+        return redirect()->route('categories.index')->with('succes','Categories created successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(Category $category)
     {
-        return view('products.show', compact('product'));
+        return view('categories.show', compact('category'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit(Category $category)
     {
-        return view('products.edit', compact('product'));
+        return view('categories.edit', compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Category $category)
     {
-        //validate input
         $request->validate([
             'name' => 'required',
             'image' => 'nullable|mimes:png,jpg',
@@ -83,34 +81,34 @@ class ProductController extends Controller
         ]);
 
         //create a new product
-        $product->update(['name' => $request->name, 'detail' => $request->detail, ]);
+        $category->update(['name' => $request->name, 'detail' => $request->detail, ]);
 
         if($request->has('image')){
-            if(Storage::exists($product->image)){
-                Storage::delete($product->image);
+            if(Storage::exists($category->image)){
+                Storage::delete($category->image);
             }
 
-            $product->image = $request->file('image')->storePublicly('products');
-            $product->save();
+            $category->image = $request->file('image')->storePublicly('categories');
+            $category->save();
         }
 
 
         //redirect to user and send friendly message
-        return redirect()->route('products.index')->with('succes','Product created successfully');
+        return redirect()->route('categories.index')->with('succes','Category created successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(Category $category)
     {
-        if(Storage::exists($product->image)){
-            Storage::delete($product->image);
+        if(Storage::exists($category->image)){
+            Storage::delete($category->image);
         }
         //delete the product
-        $product->delete();
+        $category->delete();
 
         //redirect the user&message
-        return redirect()->route('products.index')->with('succes','Product deleted successfully');
+        return redirect()->route('categories.index')->with('succes','Categories deleted successfully');
     }
 }

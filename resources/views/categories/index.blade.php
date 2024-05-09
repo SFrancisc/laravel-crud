@@ -1,14 +1,14 @@
-@extends('products.layout')
+@extends('categories.layout')
 
 @section('content')
     <div class="row">
         <div class="col-lg-12">
             <div class="pull-left">
-                <h2>Products</h2>
+                <h2>Category</h2>
             </div>
             <div class="pull-right">
-                <a class="btn btn-info" href="{{ route('categories.index') }}">Categories</a>
-                <a class="btn btn-success" href="{{ route('products.create') }}"> Create New Product</a>
+                <a class="btn btn-info" href="{{ route('products.index') }}">Products</a>
+                <a class="btn btn-success" href="{{ route('categories.create') }}"> Create New Categorie</a>
             </div>
         </div>
     </div>
@@ -27,18 +27,18 @@
             <th>Details</th>
             <th width="280px">Action</th>
         </tr>
-        @foreach ($products as $product)
+        @foreach ($categories as $category)
         <tr>
-            <td>{{ $product->id }}</td>
-            <td>{{ $product->name }}</td>
+            <td>{{ $category->id }}</td>
+            <td>{{ $category->name }}</td>
             <td>
-                <img src="{{ Storage::url($product->image) }}" style="width: 70px; height:70px;" alt="Img" />
+                <img src="{{ Storage::url($category->image) }}" style="width: 70px; height:70px;" alt="Img" />
             </td>
-            <td>{{ $product->detail }}</td>
+            <td>{{ $category->detail }}</td>
             <td>
-                <form action="{{ route('products.destroy',$product->id) }}" method="POST">
-                    <a class="btn btn-info" href="{{ route('products.show',$product->id) }}">Show</a>
-                    <a class="btn btn-primary" href="{{ route('products.edit',$product->id) }}">Edit</a>
+                <form action="{{ route('categories.destroy',$category->id) }}" method="POST">
+                    <a class="btn btn-info" href="{{ route('categories.show',$category->id) }}">Show</a>
+                    <a class="btn btn-primary" href="{{ route('categories.edit',$category->id) }}">Edit</a>
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Delete</button>
@@ -48,7 +48,7 @@
         @endforeach
 
     </table>
-    {{ $products->links() }}
+    {{ $categories->links() }}
 
 
 @endsection
